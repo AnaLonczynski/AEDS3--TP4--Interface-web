@@ -5,7 +5,7 @@ class Produto{
     #descricao;
     #ativo;
 
-    constructor(status, nome, id; gtin, descricao){
+    constructor(status, nome, id, gtin, descricao){
         this.#ativo = status;
         this.#nome = nome;
         this.#id = id;
@@ -13,6 +13,6 @@ class Produto{
         this.#gtin = gtin;
     }
 
-    
+
 
 }
