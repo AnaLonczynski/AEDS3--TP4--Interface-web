@@ -1,6 +1,9 @@
 # AEDS3--TP4--Interface-web
 
 
+## 🧱 Estrutura do Projeto
+
+```
 meu-projeto/
 │
 ├── index.html                → página principal
@@ -22,3 +25,4 @@ meu-projeto/
 │
 └── assets/
     └── img/                  → imagens e ícones
+...
