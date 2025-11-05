@@ -1,27 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Vizualizator</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Visualizador Hexadecimal</title>
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-    
-    <h1>Vizualizar Produtos </h1>
-    <div class = "component">
+  <h1>Visualizador Hexadecimal de Produtos</h1>
 
-        <div class="produtos">
-            <h3>oi</h3>    
-        </div>
+  <input type="file" id="fileInput" accept=".db,.dat,.bin" />
 
-        <div class="botoes">
-            <button> Adicionar </button>
-            <button> Remover </button>
-            <button> Alterar </button>
-        </div>
+  <table id="hexTable">
+    <thead>
+      <tr>
+        <th>Offset</th>
+        <th>Hexadecimal</th>
+        <th>Decoded Text</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
 
-    </div>
-
+  <script src="js/main.js"></script>
 </body>
 </html>
