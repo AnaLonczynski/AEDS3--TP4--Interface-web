@@ -1,0 +1,203 @@
+/* ==========================================================================
+    1. IMPORTAÇÃO DE FONTES E VARIÁVEIS GLOBAIS
+    --------------------------------------------------------------------------
+    Objetivo: Definir a tipografia externa e a paleta de cores centralizada.
+    Uso: As variáveis (--color-nome) permitem alterar o tema do site inteiro
+    mudando apenas este bloco.
+   ========================================================================== */
+
+/* Importando fontes elegantes do Google Fonts:
+    - Lato: Para corpo de texto (leitura fácil).
+    - Playfair Display: Para títulos (visual clássico/serifado). */
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Playfair+Display:wght@600;800&display=swap');
+
+:root {
+    /* Paleta "Coffee Shop" - Tons terrosos e cremes */
+    --color-coffee: #291C0E; /* Marrom quase preto, para texto principal */
+    --color-cocoa:  #6E473B; /* Marrom médio, para destaques secundários */
+    --color-latte:  #A78D78; /* Bege escuro/caramelo, para interações (hover) */
+    --color-stone:  #BEB5A9; /* Cinza quente, para elementos menos importantes (ASCII) */
+    --color-cream:  #E1D4C2; /* Bege claro, cor de fundo principal */
+}
+
+/* ==========================================================================
+    2. ESTILOS GERAIS (RESET E TIPOGRAFIA)
+    --------------------------------------------------------------------------
+    Alvo: body, h1, h2, h3
+    Objetivo: Configurar a base visual da página.
+   ========================================================================== */
+
+body {
+    font-family: 'Lato', sans-serif;    /* Fonte padrão sem serifa */
+    background-color: var(--color-cream); /* Aplica o fundo creme definido no :root */
+    color: var(--color-coffee);         /* Cor padrão do texto (café escuro) */
+}
+
+h1, h2, h3 {
+    font-family: 'Playfair Display', serif; /* Títulos com serifa para elegância */
+}
+
+/* ==========================================================================
+    3. ANIMAÇÕES
+    --------------------------------------------------------------------------
+    Alvo: Elementos com classe .saving-pulse
+    Objetivo: Feedback visual de que algo está sendo processado/salvo.
+   ========================================================================== */
+
+/* Define os quadros da animação "pulse" */
+@keyframes pulse {
+    50% { opacity: .5; } /* No meio da animação, o elemento fica 50% transparente */
+}
+
+.saving-pulse {
+    /* Aplica a animação 'pulse':
+        - Duração: 1.5s
+        - Timing: cubic-bezier(...) cria um ritmo 'rápido no início, lento no fim'
+        - Repetição: infinite (nunca para) */
+    animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* ==========================================================================
+    4. ESTILIZAÇÃO DA BARRA DE ROLAGEM (CUSTOM SCROLLBAR)
+    --------------------------------------------------------------------------
+    Alvo: Navegadores baseados em Webkit (Chrome, Edge, Safari, Opera).
+    Objetivo: Substituir a barra de rolagem cinza padrão por uma que combine
+    com o tema café.
+   ========================================================================== */
+
+.custom-scroll::-webkit-scrollbar {
+    height: 8px; /* Altura da barra horizontal */
+    width: 8px;  /* Largura da barra vertical */
+}
+
+/* O "trilho" por onde a barra corre */
+.custom-scroll::-webkit-scrollbar-track {
+    background: #3e2b18; /* Marrom escuro (fundo do trilho) */
+    border-radius: 4px;  /* Bordas arredondadas */
+}
+
+/* O "polegar" (a parte que você arrasta) */
+.custom-scroll::-webkit-scrollbar-thumb {
+    background: var(--color-cocoa); /* Cor Cocoa */
+    border-radius: 4px;
+}
+
+/* Efeito quando o mouse passa por cima da barra */
+.custom-scroll::-webkit-scrollbar-thumb:hover {
+    background: var(--color-latte); /* Fica mais claro (Latte) ao interagir */
+}
+
+/* ==========================================================================
+    5. LAYOUT DO EDITOR HEXADECIMAL (HEX EDITOR)
+    --------------------------------------------------------------------------
+    Alvo: .hex-dump-container e elementos filhos
+    Objetivo: Criar a grade visual onde os bytes são exibidos.
+    Requisito: Fonte monoespaçada é crucial para o alinhamento vertical.
+   ========================================================================== */
+
+.hex-wrapper {
+    display: grid; /* Define um grid container */
+    width: 100%;
+}
+
+.hex-dump-container {
+    font-family: 'Courier New', Courier, monospace; /* Fonte monoespaçada é obrigatória aqui */
+    line-height: 1.6;           /* Espaçamento vertical para facilitar leitura */
+    font-size: 0.9rem;          /* Tamanho levemente reduzido */
+    color: var(--color-coffee); /* (Ajustei para coffee pois o fundo original era escuro, verifique se prefere cream se o fundo desse container for escuro) */
+    /* NOTA: Se o container hex tiver fundo escuro, use color: var(--color-cream); */
+}
+
+/* Linha individual contendo: Endereço | Hex | ASCII */
+.record-line {
+    display: flex;           /* Alinha os itens lado a lado */
+    align-items: flex-start; /* Alinha no topo */
+    white-space: pre;        /* Preserva espaços em branco exatos (importante para indentação) */
+    margin-bottom: 2px;      /* Pequena separação entre linhas */
+}
+
+/* Coluna do Endereço de Memória (ex: 00000010) */
+.record-address {
+    flex-shrink: 0;        /* Impede que o endereço encolha se faltar espaço */
+    width: 9ch;            /* Largura exata de 9 caracteres (0s) */
+    color: var(--color-latte);
+    font-weight: bold;
+    margin-right: 1rem;    /* Espaço à direita antes dos bytes */
+    opacity: 0.8;          /* Levemente transparente para menos ênfase */
+}
+
+/* Coluna dos Bytes Hexadecimais */
+.record-hex {
+    flex-shrink: 0;
+    margin-right: 1.5rem; /* Separação visual entre Hex e ASCII */
+}
+
+/* Coluna da representação ASCII */
+.record-ascii {
+    flex-shrink: 0;
+    color: var(--color-stone); /* Cor mais suave para o texto ASCII */
+}
+
+/* ==========================================================================
+    6. INTERATIVIDADE E TOOLTIPS
+    --------------------------------------------------------------------------
+    Alvo: Spans dentro do hex dump que possuem o atributo 'data-tooltip'.
+    Objetivo: Mostrar informações ao passar o mouse e dar feedback visual.
+   ========================================================================== */
+
+.hex-dump-container span[data-tooltip] {
+    position: relative; /* Necessário para posicionamento de elementos filhos absolutos (se houver) */
+    cursor: help;       /* Muda o cursor para interrogação/ajuda */
+    border-radius: 2px;
+    transition: background-color 0.2s, color 0.2s; /* Suaviza a mudança de cor */
+}
+
+/* Estado Hover (Mouse em cima de um byte) */
+.hex-dump-container span[data-tooltip]:hover {
+    background-color: var(--color-latte); /* Fundo destaque */
+    color: var(--color-coffee);           /* Texto escuro para contraste */
+    font-weight: bold;
+}
+
+/* ==========================================================================
+    7. REALCE DE CAMPOS (HIGHLIGHT)
+    --------------------------------------------------------------------------
+    Alvo: Elementos selecionados logicamente (via JavaScript).
+    Objetivo: Marcar bytes específicos permanentemente ou sob demanda.
+   ========================================================================== */
+
+/* Realce genérico forte */
+.highlight-field {
+    background-color: var(--color-cocoa) !important; /* !important força sobrepor outros estilos */
+    color: white !important;
+}
+
+/* Configuração base de cada byte individual */
+.hex-dump-container .byte-span {
+    cursor: help;
+    display: inline-block; /* Permite aplicar padding/margin corretamente */
+    padding: 2px 0;        /* Aumenta a área clicável verticalmente */
+    margin: 0;             /* Zero margem lateral para manter alinhamento do texto */
+}
+
+/* Realce Específico de Bloco (Hover lógico)
+   Objetivo: Quando o mouse está num byte, colore todo o bloco lógico associado. */
+.hex-dump-container .byte-span.highlight-field {
+    background-color: #A78D78; /* Cor Latte */
+    color: #E1D4C2 !important; /* Texto Creme (forçado para garantir leitura) */
+    border-radius: 2px;
+}
+
+/* ==========================================================================
+    8. TOOLTIP GLOBAL (FLUTUANTE)
+    --------------------------------------------------------------------------
+    Alvo: #global-tooltip (geralmente uma div absoluta controlada por JS).
+    Objetivo: Caixa de detalhes que segue o mouse ou aparece fixa.
+========================================================================== */
+
+#global-tooltip {
+    background-color: #291C0E; /* Fundo Café Escuro */
+    color: #E1D4C2;            /* Texto Creme */
+    border: 1px solid #6E473B; /* Borda Cocoa sutil */
+    /* Nota: JS deve controlar display, top e left */
+}
