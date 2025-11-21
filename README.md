@@ -10,6 +10,21 @@ Este trabalho implementa um sistema de gerenciamento de produtos com interface w
 
 ---
 
+## 👥 Lista de Participantes
+
+- Pessoa 1
+- Pessoa 2
+- Pessoa 3
+- Pessoa 4
+- Pessoa 5
+- Pessoa 6
+- Pessoa 7
+- Pessoa 8
+- Pessoa 9
+- Pessoa 10
+
+---
+
 ## 🧱 Estrutura do Projeto
 
 ```
