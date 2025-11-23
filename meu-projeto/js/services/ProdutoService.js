@@ -19,12 +19,10 @@ class ProdutoService {
 
     /* ==========================================================================
         GERENCIAMENTO DO CABEÇALHO (HEADER)
-        Objetivo: Manter controle de metadados globais, como o Auto-Increment do ID.
     ============================================================================= */
 
     /**
      * Verifica se o cabeçalho existe. Se não, cria um zerado.
-     * @description Garante que nunca tentaremos ler um ID null na primeira execução.
      */
     inicializarHeader() {
         if (!localStorage.getItem(DB_HEADER_KEY)) {
@@ -39,7 +37,6 @@ class ProdutoService {
     getHeader() {
         const header = localStorage.getItem(DB_HEADER_KEY);
         if (!header) {
-            // Fallback de segurança: se foi apagado manualmente, recria.
             const novoHeader = { lastId: 0 };
             this.salvarHeader(novoHeader);
             return novoHeader;
@@ -62,20 +59,13 @@ class ProdutoService {
     /**
      * Lê todos os produtos e reconstrói as instâncias da classe Produto.
      * @returns {Produto[]} Array de objetos Produto.
-     * @description O JSON.parse retorna objetos genéricos. O .map() é essencial aqui
-     * para transformar esses objetos genéricos de volta em instâncias da classe "Produto",
-     * reativando o cálculo de tamanho (this.tamanho) definido no construtor do Model.
      */
     lerProdutos() {
         const db = localStorage.getItem(DB_KEY);
-        if (!db) return []; // Se vazio, retorna array vazio
+        if (!db) return []; 
         
         return JSON.parse(db).map(p => {
-            // Recria a instância para recuperar métodos e propriedades calculadas
             const prod = new Produto(p.nome, p.gtin, p.descricao, p.id, p.ativo);
-            
-            // Importante: O tamanho pode ter sido salvo, mas o construtor recalcula.
-            // Aqui garantimos que estamos usando o dado persistido ou recalculado.
             prod.tamanho = p.tamanho;
             return prod;
         });
@@ -84,8 +74,6 @@ class ProdutoService {
     /**
      * Salva o array de produtos no LocalStorage com um delay artificial.
      * @param {Produto[]} produtos - Lista completa de produtos.
-     * @description O 'setTimeout' de 300ms existe apenas para simular latência de disco
-     * ou rede, permitindo que o usuário veja o ícone de "Salvando..." na interface.
      */
     async salvarProdutos(produtos) {
         await new Promise(resolve => setTimeout(resolve, 300)); // Delay fake
@@ -94,47 +82,90 @@ class ProdutoService {
 
     /**
      * Busca um produto específico pelo ID.
-     * @param {number} id - ID do produto.
-     * @returns {Produto|undefined} O produto encontrado ou undefined.
-     * @description Apenas retorna se o produto estiver ATIVO. Registros excluídos logicamente são ignorados.
      */
     buscarProdutoPorId(id) {
-        // "== id" permite comparar string "1" com number 1
         return this.lerProdutos().find(p => p.id == id && p.ativo);
     }
 
     /**
+     * Encontra o índice do registro excluído logicamente (lápide=false)
+     * que melhor se ajusta ao tamanho do novo produto (**Best-Fit**).
+     * @param {number} tamanhoNecessario - O tamanho (em bytes) do produto a ser inserido.
+     * @returns {{index: number, tamanho: number}|null} Objeto com o índice e tamanho do bloco livre, ou null.
+     */
+    encontrarMelhorBlocoLivre(tamanhoNecessario) {
+        const produtos = this.lerProdutos();
+        let melhorBloco = null;
+
+        produtos.forEach((p, index) => {
+            // 1. Deve ser um registro inativo (lápide)
+            if (p.ativo === false) {
+                const tamanhoLivre = p.tamanho;
+                
+                // 2. O produto NOVO deve caber no bloco livre
+                if (tamanhoNecessario <= tamanhoLivre) {
+                    
+                    // 3. Critério Best-Fit: Encontrar o menor bloco livre que atende ao requisito
+                    if (melhorBloco === null || tamanhoLivre < melhorBloco.tamanho) {
+                        melhorBloco = { index: index, tamanho: tamanhoLivre };
+                    }
+                }
+            }
+        });
+
+        return melhorBloco;
+    }
+
+    /**
      * Cria um novo produto (Create).
-     * @param {Produto} produto - Objeto produto sem ID.
-     * @description
-     * 1. Lê o header para pegar o último ID.
-     * 2. Incrementa o ID (Auto-Increment).
-     * 3. Salva o novo ID no produto e atualiza o header.
-     * 4. Adiciona ao final do arquivo (push).
+     * @param {Produto} produto - Objeto produto.
+     * @description Implementa a estratégia de sobrescrita Best-Fit.
      */
     async criarProduto(produto) {
         const produtos = this.lerProdutos();
         const header = this.getHeader();
+
+        // 1. Tenta encontrar um espaço livre (Best-Fit)
+        const melhorBloco = this.encontrarMelhorBlocoLivre(produto.tamanho);
         
-        // Lógica de Auto-Incremento simulado
-        if (produto.id === null) {
-            header.lastId += 1;
-            produto.id = header.lastId;
-            this.salvarHeader(header); // Atualiza o metadado de último ID
+        // Se encontramos um bloco para sobrescrever (tamanho novo <= tamanho antigo)
+        if (melhorBloco) {
+            
+            // Gerar o ID, se necessário (novo produto)
+            if (produto.id === null) {
+                header.lastId += 1;
+                produto.id = header.lastId;
+                this.salvarHeader(header);
+            }
+            
+            // O novo produto herda o tamanho do bloco que ele está ocupando (para manter o espaço)
+            produto.tamanho = melhorBloco.tamanho; 
+            
+            // Sobrescreve o registro na posição do bloco livre
+            produtos[melhorBloco.index] = produto;
+            
+        } else {
+            // Se não encontrou espaço, ou o novo produto é maior: APPEND (adicionar ao final)
+            if (produto.id === null) {
+                header.lastId += 1;
+                produto.id = header.lastId;
+                this.salvarHeader(header); 
+            }
+            
+            // Usa o tamanho real do novo produto
+            
+            produtos.push(produto); // Escreve no final do "arquivo"
         }
         
-        produtos.push(produto); // Escreve no final do "arquivo"
         await this.salvarProdutos(produtos);
     }
 
     /**
      * Exclusão Lógica (Delete).
-     * @param {number} id - ID do produto a ser removido.
-     * @description Em arquivos sequenciais, não removemos o dado fisicamente para não
-     * ter que reescrever o arquivo todo (shift). Apenas marcamos uma flag (Lápide) como false.
      */
     async excluirProduto(id) {
         const produtos = this.lerProdutos();
+        // Nota: O find precisa achar apenas o produto ativo para evitar matar lápides.
         const produto = produtos.find(p => p.id == id && p.ativo);
         
         if (produto) {
@@ -146,37 +177,45 @@ class ProdutoService {
 
     /**
      * Atualização de Produto (Update).
-     * @param {Produto} produtoAtualizado - Objeto com os novos dados.
-     * @description
-     * AVISO: Lógica de Arquivos Sequenciais!
-     * Se alterarmos o nome "Pão" para "Pão de Queijo", o tamanho aumenta.
-     * Não cabe no espaço original sem sobrescrever o vizinho.
-     * * Solução adotada:
-     * 1. Exclusão lógica do registro antigo (ativo = false).
-     * 2. Criação de um registro novo no final do arquivo com os dados novos (Append).
-     * O ID é mantido o mesmo, mas fisicamente ele muda de lugar na memória.
+     * @description Implementa sobrescrita no local original se o tamanho não aumentar,
+     * ou usa a lógica de Best-Fit/Append se o tamanho aumentar.
      */
     async atualizarProduto(produtoAtualizado) {
         const produtos = this.lerProdutos();
         
-        // 1. Encontra o índice do registro antigo
-        const indiceAntigo = produtos.findIndex(p => p.id == produtoAtualizado.id && p.ativo);
+        // 1. Encontra o índice e o objeto antigo
+        const indiceAntigo = produtos.findIndex(p => p.id == produtoAtualizado.id);
         
-        // 2. "Mata" o registro antigo (cria a lápide 0x2A)
-        if (indiceAntigo !== -1) {
-            produtos[indiceAntigo].ativo = false;
+        if (indiceAntigo === -1) {
+            throw new Error(`Produto com ID ${produtoAtualizado.id} não encontrado.`);
         }
-
-        // Salva o estado com o antigo deletado
-        await this.salvarProdutos(produtos);
         
-        // 3. Reativa o objeto novo e insere como se fosse novo (no fim da lista)
-        // Nota: Ao chamar criarProduto, ele vai para o fim do array (append)
-        produtoAtualizado.ativo = true;
+        const produtoAntigo = produtos[indiceAntigo];
         
-        // Como o ID já existe (não é null), o criarProduto não vai gerar novo ID,
-        // apenas vai adicionar o objeto ao array.
-        await this.criarProduto(produtoAtualizado);
+        // SE o novo produto couber no espaço alocado original (tamanho novo <= tamanho antigo)
+        if (produtoAtualizado.tamanho <= produtoAntigo.tamanho) {
+            
+            // 2. Sobrescreve no LOCAL ORIGINAL (Update In Place)
+            // O novo produto herda o tamanho alocado do registro antigo.
+            produtoAtualizado.tamanho = produtoAntigo.tamanho;
+            produtoAtualizado.ativo = true;
+            produtos[indiceAntigo] = produtoAtualizado;
+            
+            await this.salvarProdutos(produtos);
+            
+        } else {
+            // 3. SE o novo produto é MAIOR, precisamos de um novo local (Delete and Append)
+            
+            // "Mata" o registro antigo (cria a lápide 0x2A)
+            produtoAntigo.ativo = false;
+            
+            // Salva o estado com o antigo deletado (adiciona o espaço ao pool de blocos livres)
+            await this.salvarProdutos(produtos);
+            
+            // Insere o produto atualizado usando a lógica de criação (Best-Fit ou Append)
+            // Como o ID já existe, ele será usado para identificar a atualização.
+            await this.criarProduto(produtoAtualizado);
+        }
     }
 }
 
