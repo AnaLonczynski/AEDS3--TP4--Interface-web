@@ -112,7 +112,7 @@ O projeto utiliza uma paleta de cores temática "Coffee Shop":
 - `--color-stone: #BEB5A9` - Cinza quente (elementos secundários)
 - `--color-cream: #E1D4C2` - Bege claro (fundo)
 
-![image-20251121154347929](.\assets\image-20251121154347929.png)
+![image-20251121154347929](./assets/image-20251121154347929.png)
 
 ---
 
@@ -156,9 +156,9 @@ O arquivo possui um cabeçalho com metadados:
 - **Quantidade de Registros Ativos (4 bytes):** Contador de registros não deletados
 - **Último ID Gerado (8 bytes):** Contador para auto-incremento de IDs
 
-![image-20251121160039890](.\assets\image-20251121160039890.png)
+![image-20251121160039890](./assets/image-20251121160039890.png)
 
-![image-20251121155948942](.\assets\image-20251121155948942.png)
+![image-20251121155948942](./assets/image-20251121155948942.png)
 
 ---
 
@@ -191,7 +191,7 @@ Como os registros têm tamanho variável, uma atualização que altere o tamanho
 2. Cria um novo registro no final do arquivo com os dados atualizados
 3. Mantém o mesmo ID lógico
 
-![image-20251121160546465](.\assets\image-20251121160546465.png)
+![image-20251121160546465](./assets/image-20251121160546465.png)
 
 ### 5.3. ProdutoController (Controller)
 
@@ -217,7 +217,7 @@ O controlador gerencia toda a lógica da interface:
 - Implementa tooltips informativos
 - Realça campos relacionados ao passar o mouse
 
-![image-20251121160857067](.\assets\image-20251121160857067.png)
+![image-20251121160857067](./assets/image-20251121160857067.png)
 
 ### 5.4. Interface HTML
 
@@ -237,7 +237,7 @@ A interface é dividida em três seções principais:
    - Representação visual do arquivo binário
    - Interatividade com tooltips
 
-![image-20251121161045800](.\assets\image-20251121161045800.png)
+![image-20251121161045800](./assets/image-20251121161045800.png)
 
 ---
 
@@ -266,7 +266,7 @@ O visualizador apresenta:
 
 - **Indicador de Salvamento:** Animação "Gravando..." durante operações de escrita
 
-![image-20251121161248792](.\assets\image-20251121161248792.png)
+![image-20251121161248792](./assets/image-20251121161248792.png)
 
 ---
 
@@ -308,11 +308,11 @@ O visualizador apresenta:
 4. Renderiza em linhas de 16 bytes (ou conforme largura da tela)
 5. Adiciona eventos de interação (hover, tooltip)
 
-![image-20251121161505960](.\assets\image-20251121161505960.png)
+![image-20251121161505960](./assets/image-20251121161505960.png)
 
-![image-20251121161713066](.\assets\image-20251121161713066.png)
+![image-20251121161713066](./assets/image-20251121161713066.png)
 
-![image-20251121161752491](.\assets\image-20251121161752491.png)
+![image-20251121161752491](./assets/image-20251121161752491.png)
 
 ---
 
