@@ -12,16 +12,15 @@ Este trabalho implementa um sistema de gerenciamento de produtos com interface w
 
 ## 👥 Lista de Participantes
 
-- Pessoa 1
-- Pessoa 2
-- Pessoa 3
-- Pessoa 4
-- Pessoa 5
-- Pessoa 6
-- Pessoa 7
-- Pessoa 8
-- Pessoa 9
-- Pessoa 10
+- Rayssa Mell de Souza Silva
+- Maurício Villela Nobre
+- Júlia Oliveira Drumond
+- Lívia Alves Ferreira
+- Thiago Pereira de Oliveira
+- Luiz Fernando Antunes da Silva Frassi
+- Ana Cristina Martins Silva
+- Jerson Vitor de Paula Gomes
+- Bruno Rafael
 
 ---
 
@@ -372,6 +371,44 @@ O visualizador hexadecimal ajusta automaticamente o número de bytes por linha b
 - Nome: Campo obrigatório
 - GTIN-13: Deve ter exatamente 13 caracteres
 - Descrição: Máximo de 100 caracteres
+
+---
+
+## 📃Resultados
+
+### Frases para o Teste de Avaliação de Utilidade e Usabilidade da Aplicação
+
+1. A aplicação me ajudou a compreender como as estruturas de dados são armazenadas em arquivo.
+2. A aplicação é uma ferramenta útil para meu aprendizado sobre manipulação de arquivos de dados.
+3. O uso da aplicação tornou mais clara a relação entre a estrutura de dados e sua representação em arquivo.
+4. As funções da aplicação são fáceis de encontrar e usar, sem necessidade de treinamento adicional.
+5. A interface da aplicação é intuitiva e não gerou dúvidas sobre o que fazer.
+6. As mensagens de feedback (sucesso/erro) exibidas pela aplicação são claras e úteis.
+7. Gostei de usar a aplicação.
+8. De modo geral, estou satisfeito(a) com a experiência de uso da aplicação para o propósito de aprendizado.
+
+### Respostas
+
+- **Avaliação de Utilidade e Usabilidade**
+
+![image-20251124085610936](.\assets\image-20251124085610936.png)
+
+- **Familiaridade com o tema 'Estruturas de Dados em Arquivos' antes de usar a aplicação**
+
+![image-20251124085855417](.\assets\image-20251124085855417.png)
+
+- **Nota de 0 a 10 para a aplicação em termos de facilidade de uso**
+
+![image-20251124090014173](.\assets\image-20251124090014173.png)
+
+- **Resumo de comentários sobre a aplicação**
+
+  - **Design e Organização:** O trabalho está bem elaborado, com uma exposição das informações clara, objetiva e consistente, tornando o conteúdo acessível e de fácil entendimento.
+
+  - **Usabilidade e Utilidade:** A aplicação foi considerada muito boa, simples de usar e muito útil, com uma maneira de exposição e visualização dos dados interessante e fácil.
+
+  - **Funcionalidade de Visualização:** O recurso de passar o mouse por cima da simulação de arquivo para visualizar mais informações foi muito apreciado, facilitando o aprendizado.
+  - **Sugestão de Melhoria:** Foi sugerido que seria interessante não permitir produtos com códigos repetidos na aplicação (*PROBLEMA CORRIGIDO*).
 
 ---
 
