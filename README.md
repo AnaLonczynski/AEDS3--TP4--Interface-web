@@ -21,6 +21,7 @@ Este trabalho implementa um sistema de gerenciamento de produtos com interface w
 - Ana Cristina Martins Silva
 - Jerson Vitor de Paula Gomes
 - Bruno Rafael
+- Matheus Eduardo Campos Soares
 
 ---
 
@@ -374,7 +375,7 @@ O visualizador hexadecimal ajusta automaticamente o número de bytes por linha b
 
 ---
 
-## 📃Resultados
+## 📃 Resultados
 
 ### Frases para o Teste de Avaliação de Utilidade e Usabilidade da Aplicação
 
@@ -391,15 +392,15 @@ O visualizador hexadecimal ajusta automaticamente o número de bytes por linha b
 
 - **Avaliação de Utilidade e Usabilidade**
 
-![image-20251124085610936](.\assets\image-20251124085610936.png)
+![image-20251124085610936](./assets/image-20251124085610936.png)
 
 - **Familiaridade com o tema 'Estruturas de Dados em Arquivos' antes de usar a aplicação**
 
-![image-20251124085855417](.\assets\image-20251124085855417.png)
+![image-20251124085855417](./assets/image-20251124085855417.png)
 
 - **Nota de 0 a 10 para a aplicação em termos de facilidade de uso**
 
-![image-20251124090014173](.\assets\image-20251124090014173.png)
+![image-20251124090014173](./assets/image-20251124090014173.png)
 
 - **Resumo de comentários sobre a aplicação**
 
