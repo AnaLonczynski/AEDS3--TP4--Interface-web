@@ -8,6 +8,10 @@ Este trabalho implementa um sistema de gerenciamento de produtos com interface w
 
 **Objetivo Principal:** Desenvolver uma aplicação web que demonstre o funcionamento de arquivos sequenciais com registros de tamanho variável, incluindo técnicas de exclusão lógica (lápide) e visualização hexadecimal dos dados.
 
+### 📽️ Vídeo
+
+\<link do vídeo\>
+
 ---
 
 ## 👥 Lista de Participantes
