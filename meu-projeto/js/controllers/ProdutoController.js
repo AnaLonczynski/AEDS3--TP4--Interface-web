@@ -227,17 +227,32 @@ export class ProdutoController {
         const gtin = this.gtinInput.value.trim();
         const descricao = this.descricaoInput.value.trim();
 
-        // Validações básicas
+        // verificação de campos obrigatórios
         if (!nome || !gtin) {
             this.mostrarFeedback('Preencha os campos obrigatórios.', 'erro');
             return;
         }
+
+        // Verificação do tamanho do GTIN
         if (gtin.length !== 13) {
             this.mostrarFeedback('O GTIN deve ter exatamente 13 caracteres.', 'erro');
             return;
         }
 
-        this.savingIndicator.classList.remove('hidden'); // Mostra "Salvando..."
+        // Verificação do GTIN ser único
+        const produtos = produtoService.lerProdutos();
+        const produtoDuplicado = produtos.find(p => p.gtin === gtin && p.ativo);
+        if (produtoDuplicado) {
+            if (!id || produtoDuplicado.id != id) {
+                this.mostrarFeedback(`Erro: O GTIN informado já pertence ao produto "${produtoDuplicado.nome}".`, 'erro');
+                this.gtinInput.focus();
+                this.gtinInput.classList.add('ring-2', 'ring-red-500');
+                setTimeout(() => this.gtinInput.classList.remove('ring-2', 'ring-red-500'), 2000);
+                return; 
+            }
+        }
+
+        this.savingIndicator.classList.remove('hidden');
 
         try {
             if (id) {
