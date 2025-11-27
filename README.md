@@ -10,9 +10,12 @@ Este trabalho implementa um sistema de gerenciamento de produtos com interface w
 
 ### 📽️ Vídeo
 
-\<link do vídeo\>
+\[Vídeo do TP4](https://youtu.be/7t3ADP3YlPs)
 
 ---
+
+### 💻 Site Funcionando
+\[Link para o Site na integra](https://analonczynski.github.io/AEDS3--TP4--Interface-web/)
 
 ## 👥 Lista de Participantes
 
